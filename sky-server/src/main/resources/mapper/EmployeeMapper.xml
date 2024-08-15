@@ -2,4 +2,39 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.sky.mapper.EmployeeMapper">
+    <select id="rows" resultType="com.sky.entity.Employee">
+        select *from sky_take_out.employee
+        <where>
+            <if test="employeePageQueryDTO.name != null and employeePageQueryDTO.name !='' ">
+                name like concat ('%',#{employeePageQueryDTO.name},'%')
+            </if>
+        </where>
+        limit #{start},#{employeePageQueryDTO.pageSize}
+    </select>
+
+    <select id="total" resultType="Long">
+        select count(*)from sky_take_out.employee
+        <where>
+            <if test="employeePageQueryDTO.name != null and employeePageQueryDTO.name !='' ">
+                name like concat ('%',#{employeePageQueryDTO.name},'%')
+            </if>
+        </where>
+    </select>
+    <select id="update" resultType="employee">
+        update employee
+        <set>
+            <if test="name != null">name = #{name},</if>
+            <if test="username != null">username = #{username},</if>
+            <if test="password != null">password = #{password},</if>
+            <if test="phone != null">phone = #{phone},</if>
+            <if test="sex != null">sex = #{sex},</if>
+            <if test="idNumber != null">id_number = #{idNumber},</if>
+            <if test="updateTime!= null">update_time = #{updateTime},</if>
+            <if test="updateUser!= null">update_user= #{updateUser},</if>
+            <if test="status != null">status = #{status},</if>
+        </set>
+        <where>
+            id=#{id}
+        </where>
+    </select>
 </mapper>
